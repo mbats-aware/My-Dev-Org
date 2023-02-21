@@ -14,12 +14,13 @@ jobs:
         run: |
           echo ${{ secrets.AUTH_URL }} > authURL
           sfdx auth:sfdxurl:store -f ./authURL -a "QA Org"
-      - name: Creating Deployment Manifests
+      - name: Creating Deployment Package
         run: |
-          sfdx force:source:manifest:create --sourcepath force-app -- manifesttype pre
-          sfdx force:source:manifest:create --sourcepath force-app -- manifesttype post
-          sfdx force:source:manifest:create --sourcepath force-app -- manifesttype package
+          sfdx force:source:convert -r force-app -d deploy
+      #- name: Creating Deployment Manifests
+        #run: |
+          #sfdx force:source:manifest:create --sourcepath deploy -- package
       - name: Validating Deployment
         run: |
-          sfdx force:source:deploy -p "deploy/" -c --verbose
+          sfdx force:source:deploy -p deploy -c --verbose
 
