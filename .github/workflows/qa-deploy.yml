@@ -28,9 +28,7 @@ jobs:
           # sfdx force:source:deploy -p "deploy/" -c --verbose -u "QA Org"
         run: |
           sf deploy metadata --d "deploy/" -o "QA Org" --dry-run --verbose
-  deploy:
-    steps: 
-      - name: Validating Deployment
+      - name: Deploying Package
         run: |
           sfdx force:source:deploy -p "deploy/" --verbose -u "QA Org"
 
