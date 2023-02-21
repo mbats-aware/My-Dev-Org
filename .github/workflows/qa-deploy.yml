@@ -16,11 +16,8 @@ jobs:
           sfdx auth:sfdxurl:store -f ./authURL -a "QA Org"
       - name: Creating Deployment Package
         run: |
-          sfdx force:source:convert -r force-app -d deploy
-      #- name: Creating Deployment Manifests
-        #run: |
-          #sfdx force:source:manifest:create --sourcepath deploy -- package
+          sfdx force:source:convert -r ./force-app -d ./deploy
       - name: Validating Deployment
         run: |
-          sfdx force:source:deploy -p deploy -c --verbose
+          sfdx force:source:deploy -p ./deploy -c --verbose
 
