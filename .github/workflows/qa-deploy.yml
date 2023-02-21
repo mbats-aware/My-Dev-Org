@@ -14,10 +14,16 @@ jobs:
         run: |
           echo ${{ secrets.AUTH_URL }} > authURL
           sfdx auth:sfdxurl:store -f ./authURL -a "QA Org"
-      - name: Creating Deployment Package
+      - name: Generate Delta Changes
         run: |
-          sfdx force:source:convert -r ./force-app -d ./deploy
+          export HOME=/root
+          sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output "deploy/" --source force-app/main/default --ignore .forceignore
+          echo "--- package.xml generated with added and modified metadata ---"
+          cat deploy/package/package.xml
+          echo
+          echo "--- destructiveChanges.xml generated with deleted metadata ---"
+          cat deploy/destructiveChanges/destructiveChanges.xml
       - name: Validating Deployment
         run: |
-          sfdx force:source:deploy -p ./deploy -c --verbose
+          sfdx force:source:deploy -p "deploy/" -c --verbose
 
