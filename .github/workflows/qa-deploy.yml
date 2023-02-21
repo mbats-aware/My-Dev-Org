@@ -17,12 +17,19 @@ jobs:
         run: |
           echo ${{ secrets.AUTH_URL }} > authURL
           sfdx auth:sfdxurl:store -f authURL -a "QA Org"
-      - name: Generating Deployment Package
+      - name: Install SFDX GIT delta
         run: |
-          export HOME=/root
-          sfdx force:source:convert -r "/force-app" -d "/deploy"
-      - name: Validating Deployment
+          echo y | sfdx plugins:install sfdx-git-delta
+          sfdx sgd:source:delta --to "HEAD" --from "HEAD^"  --output "deploy/" --source force-app/main/default --ignore .forceignore
+          cat package.xml
+      - uses: sfdx-actions/setup-sfdx@v1
+        with:
+          sfdx-auth-url: ${{ secrets.AUTH_URL }}
+      - name: Validate Deployment
         run: |
-          export HOME=/root
-          sfdx force:source:deploy -p "/deploy" -c --verbose
+            if grep -q '<types>' deploy/package/package.xml; then
+              echo "--- Validating deploying added and modified metadata ---"
+              sfdx force:source:deploy -x deploy/package.xml -u "QA Org" -l RunLocalTests -c
+              echo
+            fi
 
