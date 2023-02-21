@@ -14,3 +14,7 @@ jobs:
         run: |
           echo ${{ secrets.AUTH_URL }} > authURL
           sfdx auth:sfdxurl:store -f ./authURL -a "QA Org"
+      - name: Validate
+        run: |
+          sfdx force:source:deploy -p "/force-app/main/default" -c --verbose
+
