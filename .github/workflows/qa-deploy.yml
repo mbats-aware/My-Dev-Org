@@ -20,7 +20,7 @@ jobs:
       - name: Install SFDX GIT delta
         run: |
           echo y | sfdx plugins:install sfdx-git-delta
-          sfdx sgd:source:delta --to "HEAD" --from "HEAD^"  --output "deploy/" --source force-app/main/default --ignore .forceignore
+          sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output "./deploy/" --source "./force-app/main/default" --ignore "./.forceignore"
           cat package.xml
       - uses: sfdx-actions/setup-sfdx@v1
         with:
