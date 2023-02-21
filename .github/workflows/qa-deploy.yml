@@ -19,7 +19,7 @@ jobs:
           sfdx auth:sfdxurl:store -f authURL -a "QA Org"
       - name: Generating Deployment Package
         run: |
-          sfdx force:source:convert -r ".\force-app\main\default\" -d ".\deploy"
+          sfdx force:source:convert -r ".\force-app\main\default\" -d ".\deploy\"
       - name: Validating Deployment
         run: |
           sfdx force:source:deploy -p ".\deploy" -c --verbose
