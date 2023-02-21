@@ -16,14 +16,13 @@ jobs:
           sfdx auth:sfdxurl:store -f ./authURL -a "QA Org"
       - name: Generate Delta Changes
         run: |
-          export HOME=/root
-          sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output "deploy/" --source force-app/main/default --ignore .forceignore
+          sfdx sgd:source:delta --to "HEAD" --from "HEAD^" --output /deploy --source /force-app/main/default --ignore .forceignore
           echo "--- package.xml generated with added and modified metadata ---"
-          cat deploy/package/package.xml
+          cat /deploy/package.xml
           echo
           echo "--- destructiveChanges.xml generated with deleted metadata ---"
-          cat deploy/destructiveChanges/destructiveChanges.xml
+          cat /deploy/destructiveChanges.xml
       - name: Validating Deployment
         run: |
-          sfdx force:source:deploy -p "deploy/" -c --verbose
+          sfdx force:source:deploy -p /deploy -c --verbose
 
