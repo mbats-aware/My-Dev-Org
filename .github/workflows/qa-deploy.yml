@@ -13,4 +13,4 @@ jobs:
       - name: Authenticate
         run: |
           echo ${{ secrets.AUTH_URL }} > authURL
-          sfdx auth:sfdxurl:store -f authURL -a qaOrg
+          sfdx auth:sfdxurl:store -f authURL -a "Aware Dev Org"
