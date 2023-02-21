@@ -16,5 +16,5 @@ jobs:
           sfdx auth:sfdxurl:store -f ./authURL -a "QA Org"
       - name: Validating Deployment
         run: |
-          sfdx force:source:deploy -p "/force-app/main/default" -c --verbose
+          sfdx force:source:deploy -c --verbose
 
