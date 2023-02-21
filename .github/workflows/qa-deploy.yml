@@ -10,11 +10,11 @@ jobs:
     container:
       image: awareservices/sfdx-cli:latest
     steps:
-      - name: Authenticate
+      - name: Authenticating QA Org
         run: |
           echo ${{ secrets.AUTH_URL }} > authURL
           sfdx auth:sfdxurl:store -f ./authURL -a "QA Org"
-      - name: Validate
+      - name: Validating Deployment
         run: |
           sfdx force:source:deploy -p "/force-app/main/default" -c --verbose
 
