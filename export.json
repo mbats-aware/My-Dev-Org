@@ -1,0 +1,43 @@
+{
+    "objectSets" : [
+        {
+            "description": "Products and Pricebooks data",
+            "objects": [
+                {
+                    "query": "SELECT all from Product2",
+                    "operation": "Upsert",
+                    "externalId": "ProductCode"
+                },
+                {
+                    "query": "SELECT all FROM Pricebook2",
+                    "operation": "Upsert",
+                    "externalId": "Name"
+                },
+                {
+                    "query": "SELECT all FROM PricebookEntry",
+                    "operation": "Upsert",
+                    "externalId": "Product2.ProductCode;Pricebook2.Name"
+                }
+            ]
+        }, {
+            "description": "Accounts and Contacts",
+            "objects": [
+                {
+                    "query": "SELECT all from Account",
+                    "operation": "Upsert",
+                    "externalId": "AccountNumber"
+                },
+                {
+                    "query": "SELECT all FROM Contact",
+                    "operation": "Upsert",
+                    "externalId": "Account.AccountNumber,Email"
+                },
+                {
+                    "query": "SELECT all FROM PricebookEntry",
+                    "operation": "Upsert",
+                    "externalId": "Product2.ProductCode;Pricebook2.Name"
+                }
+            ]
+        },
+    ]
+}

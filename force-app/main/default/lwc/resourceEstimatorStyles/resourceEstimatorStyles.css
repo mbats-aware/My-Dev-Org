@@ -1,0 +1,232 @@
+.container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.container .row {
+  display: flex;
+  flex-flow: row;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgb(225,225,225);
+}
+
+.slds-link:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.col {
+  line-height: 40px;
+  padding: 2px 4px;
+  border-bottom: 1px solid rgb(225,225,225);
+}
+
+.left-side {
+  display: flex;
+  flex-direction: row;
+  flex: 0;
+}
+
+.weeks {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  flex: 1;
+}
+
+.right-side {
+  display: flex;
+  flex-direction: row;
+  flex: 0;
+}
+
+.header {
+  background-color: rgb(243, 243, 243);
+  color: rgb(68, 68, 68);
+  padding: 0.25rem 0.5rem;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.role { 
+  width: 300px;
+}
+      
+.resource { 
+  width: 350px;
+}
+
+.rate { 
+  width: 100px;
+  text-align: center;
+}
+
+.fill-action {
+  width: 31px;
+  text-align: center;
+}
+
+.week {
+  text-align: center;
+}
+
+.weeks {
+  display: flex;
+  flex: 1;
+  flex-direction: row;
+  overflow: auto;
+}
+
+.utilisation {
+  flex: 0;
+  flex-direction: row;
+  min-width: 53px;
+  text-align: center;
+}
+
+.total-days { 
+  width: 100px;
+  text-align: center;
+}
+
+.total-amount { 
+  width: 100px;
+  text-align: center;
+}
+
+.total-amount { 
+  width: 100px;
+  text-align: center;
+}
+
+.summary-footer {
+  position: fixed;
+  bottom: 0px;
+  background-color: white;
+}
+
+.container {
+  max-width: 100%;
+  position: relative;
+}
+
+.tab {
+  background-color: white;
+  max-width: 100%;
+  overflow: auto;
+}
+
+.actions {
+  position: sticky;
+  text-align: right;
+  left: 0px;
+  width: 100%;
+  min-width: 100%;
+  max-width: 100%;
+  padding: 7px;
+}
+
+table {
+  border-collapse: separate;
+  border-spacing: 0;
+  margin-bottom: 7px;
+  overflow: auto;
+  max-width: 100%;
+  /*border: 0.5pt solid;*/
+}
+
+table.rates {
+  max-width: 800px;
+  margin: 0px auto;
+}
+
+table.resources thead tr th,
+table tbody tr td {
+  position: inherit;
+}
+
+table tbody tr td {
+  background-color: #fff;
+}
+
+table.resources thead tr th:nth-child(1),
+table.resources tbody tr td:nth-child(1),
+div.flex-container > .role {
+  min-width: 300px;
+  max-width: 300px;
+  width: 300px;
+  position: sticky !important;
+  left: 0px;
+}
+
+table.resources thead tr th:nth-child(2),
+table.resources tbody tr td:nth-child(2),
+div.flex-container > .resource {
+  min-width: 350px;
+  max-width: 350px;
+  width: 350px;
+  position: sticky !important;
+  left: 300px;
+}
+
+table.resources thead tr th:nth-child(3),
+table.resources tbody tr td:nth-child(3),
+div.flex-container > .rate {
+  min-width: 110px;
+  max-width: 110px;
+  width: 110px;
+  position: sticky !important;
+  left: 650px;
+  border-right: 3px solid rgb(200, 200, 200);
+}
+
+table.resources thead tr th:nth-child(4),
+table.resources tbody tr td:nth-child(4) {
+  border-left: 0px;
+}
+
+table.resources thead tr th:nth-last-child(1),
+table.resources tbody tr td:nth-last-child(1),
+div.flex-container > .total-amount {
+  min-width: 100px;
+  max-width: 100px;
+  width: 100px;
+  position: sticky !important;
+  right: 0px;
+}
+
+table.resources thead tr th:nth-last-child(2),
+table.resources tbody tr td:nth-last-child(2),
+div.flex-container > .total-days {
+  min-width: 100px;
+  max-width: 100px;
+  width: 100px;
+  position: sticky !important;
+  right: 100px;
+  border-left: 3px solid rgb(200, 200, 200);
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input_has-value {
+  background-color: rgb(235, 247, 230);
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+input {
+  width: 100%;
+}
+
+.input-centered {
+  text-align: center;
+  padding: 0px;
+}
