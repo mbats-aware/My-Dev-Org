@@ -7,13 +7,13 @@ on:
 
 jobs:
   validate:
-    if: ${{ github.event.pull_request.merge == true }}
-      runs-on: ubuntu-latest
-      environment: QA
-      container:
-        image: awareservices/sfdx-cli:latest
-      steps:
-        name: Authenticate QA Org
-        run: |
+    if: github.event.pull_request.merge == true
+    runs-on: ubuntu-latest
+    environment: QA
+    container:
+      image: awareservices/sfdx-cli:latest
+    steps:
+      name: Authenticate QA Org
+      run: |
             echo ${{ secrets.AUTH_URL }} > authURL
             sfdx auth:sfdxurl:store -f qaAuthUrl -a qa
