@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package xmlns="http://soap.sforce.com/2006/04/metadata">
+    <types>
+        <members>CreateFieldUtilisationQueues</members>
+        <members>FieldIterable</members>
+        <members>GenerateDataDeployFiles</members>
+        <members>GetEntityDefinitions</members>
+        <members>GetFieldDefinitions</members>
+        <members>GetFieldUtilisation</members>
+        <members>GetMetadataIdentifiers</members>
+        <members>LookupSearchResult</members>
+        <members>LookupSearchResultTests</members>
+        <members>ResourceEstimatorController</members>
+        <members>Util</members>
+        <name>ApexClass</name>
+    </types>
+    <types>
+        <members>ResourceEstimator</members>
+        <name>ApexPage</name>
+    </types>
+    <types>
+        <members>lookup</members>
+        <members>resourceEstimator</members>
+        <members>resourceEstimatorRow</members>
+        <members>resourceEstimatorStyles</members>
+        <name>LightningComponentBundle</name>
+    </types>
+    <types>
+        <members>sheetjs</members>
+        <name>StaticResource</name>
+    </types>
+    <version>55.0</version>
+</Package>

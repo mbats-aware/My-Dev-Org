@@ -1,0 +1,478 @@
+<!-- sldsValidatorIgnore -->
+<template>
+    <div class="slds-card slds-grid slds-grid_vertical" if:true={opp}>
+        <div class="slds-page-header slds-page-header_record-home">
+            <div class="slds-page-header__row">
+                <div class="slds-page-header__col-title">
+                    <div class="slds-media">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container  slds-icon-standard-resource-capacity slds-align_absolute-center">
+                                <lightning-icon icon-name="utility:resource_capacity" size="small" variant="inverse" class="slds-page-header__icon slds-align_absolute-center"></lightning-icon>
+                                <span class="slds-assistive-text">Resource Plan</span>
+                            </span>
+                        </div>
+                        <div class="slds-media__body">
+                            <div class="slds-page-header__name">
+                                <div class="slds-page-header__name-title">
+                                    <h1>
+                                        <span>Resource Plan</span>
+                                        <span class="slds-page-header__title slds-truncate slds-link" title={opp.title} onclick={navigateToRecord} data-record-id={opp.id}>
+                                            {opp.title}
+                                        </span>
+                                    </h1>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-page-header__col-actions">
+                    <div class="slds-page-header__controls">
+                        <div class="slds-page-header__control">
+                            <lightning-button-icon variant="border-filled" icon-name="utility:settings" onclick={toggleConfigModal}></lightning-button-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="slds-grid">
+            <div class="slds-no-flex slds-border_top" style="z-index: 1">
+                <div class="slds-panel slds-size_small slds-panel_docked slds-panel_docked-left slds-is-open" style="max-height: 100%" aria-hidden="false">
+                    <div class="slds-panel__header">
+                        <h2 class="slds-panel__header-title slds-text-heading_small slds-truncate" title="Panel Header">Summary</h2>
+                        <div class="slds-panel__header-actions">
+                            
+                        </div>
+                    </div>
+                    <div class="slds-panel__body">
+                        <div style="height: 250px; width: 100%;" class="slds-align_absolute-center slds-is-relative" if:true={isLoading}>
+                            <lightning-spinner size="medium" variant="brand"></lightning-spinner>
+                        </div>
+    
+
+                        <table if:false={isLoading}>
+
+                            <!--tr>
+                                <td colspan="2">
+                                    <c-lookup label="Opportunity" disabled={recordId} selection={account} onsearch={handleAccountSearch} onselectionchange={handleSelectionChange}></c-lookup>
+                                </td>
+                            </tr-->
+
+                            <tr if:true={account}>
+                                <td colspan="2">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="text-input-id-47">Account</label>
+                                        <div class="slds-form-element__control slds-border_bottom">
+                                            <lightning-button variant="base" label={account.title} onclick={navigateToRecord} 
+                                                data-sobject="Account" data-record-id={account.id}></lightning-button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr if:true={rateCard}>
+                                <td colspan="2" class="slds-p-bottom_small">
+                                    <div class="slds-form-element">
+                                        <label class="slds-form-element__label" for="text-input-id-47">Rate Card</label>
+                                        <div class="slds-form-element__control slds-border_bottom">
+                                            <lightning-button variant="base" label={rateCard.title} onclick={navigateToRecord} 
+                                                data-sobject="Rate_Card__c" data-record-id={rateCard.id}></lightning-button>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                            
+                            <tr>
+                                <td colspan="2" class="slds-p-bottom_small"></td>
+                            </tr>
+                            <tr>
+                                <td class="slds-text-align_left"><b>Project Total:</b></td>
+                                <td class="slds-text-align_right">
+                                    <b><lightning-formatted-number format-style="currency" value={resourceTotalAmount}></lightning-formatted-number></b>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="slds-text-align_left">
+                                    Min. Total: (-<lightning-formatted-number format-style="percent-fixed" value={plan.variance}></lightning-formatted-number>)</td>
+                                <td class="slds-text-align_right">
+                                    <lightning-formatted-number format-style="currency" value={minTotal}></lightning-formatted-number>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="slds-text-align_left slds-p-bottom_small">
+                                    Max. Total: (+<lightning-formatted-number format-style="percent-fixed" value={plan.variance}></lightning-formatted-number>)</td>
+                                <td class="slds-text-align_right slds-p-bottom_small">
+                                    <lightning-formatted-number format-style="currency" value={maxTotal}></lightning-formatted-number>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td colspan="2" class="slds-border_top slds-p-top_small"></td>
+
+                            </tr>
+                            <tr>
+                                <td class="slds-text-align_left">
+                                    Project Cost:
+                                </td>
+                                <td class="slds-text-align_right">
+                                    <lightning-formatted-number format-style="currency" value={resourceTotalCost}></lightning-formatted-number>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="slds-text-align_left">Target Margin:</td>
+                                <td class="slds-text-align_right">
+                                    <lightning-formatted-number format-style="percent" value={plan.targetMargin} minimum-fraction-digits="1" maximum-fraction-digits="1"></lightning-formatted-number>
+                                </td>
+                            </tr>
+                            <tr if:true={plan.marginCompliant}>
+                                <td class="slds-text-align_left slds-text-color_success">
+                                    <b>Project Margin:</b>
+                                </td>
+                                <td class="slds-text-align_right slds-text-color_success">
+                                    <b><lightning-formatted-number format-style="percent" value={totalMargin} minimum-fraction-digits="1" maximum-fraction-digits="1"></lightning-formatted-number></b>
+                                </td>
+                            </tr>
+                            <tr if:false={plan.marginCompliant}>
+                                <td class="slds-text-align_left slds-text-color_error">
+                                    <b>Project Margin:</b>
+                                </td>
+                                <td class="slds-text-align_right slds-text-color_error">
+                                    <b><lightning-formatted-number format-style="percent" value={totalMargin} minimum-fraction-digits="1" maximum-fraction-digits="1"></lightning-formatted-number></b>
+                                </td>
+                            </tr>
+                        </table> 
+                    </div>
+                </div>
+            </div>
+            <template if:false={isLoading}>
+                <div class="slds-col slds-box slds-box_xx-small slds-theme_default" style="width: calc(100vw - 276px);">
+    
+                    <lightning-tabset active-tab-value="plan" class="slsd-m-left_small" style="max-width: 100%;">
+                        <lightning-tab label="Resource Plan" value="plan" class="slds-p-horizontal_none tab" style="overflow: initial; max-width: 100%; padding-top: 0px;">
+        
+                            <div class="slds-clearfix slds-p-around_x-small">
+                                <lightning-button-group class="slds-float_right">
+                                    <lightning-button-icon icon-name="utility:save" onclick={save} disabled={isSaving}></lightning-button-icon>
+                                    <lightning-button-menu alternative-text="Show menu" menu-alignment="right" variant="border-filled">
+                                        <lightning-menu-item label="Add Resource" onclick={addRow}></lightning-menu-item>
+                                        <!--lightning-menu-divider></lightning-menu-divider>
+                                        <lightning-menu-item label="Export to Image"></lightning-menu-item-->
+                                        <lightning-menu-item label="Export to CSV" onclick={exportToExcel}></lightning-menu-item>
+                                    </lightning-button-menu>
+                                </lightning-button-group>
+                            </div>
+        
+                            <div style="height: 5rem; width: 100%;" class="slds-align_absolute-center slds-is-relative" if:true={isLoading}>
+                                <lightning-spinner size="medium" variant="brand"></lightning-spinner>
+                            </div>
+        
+                            <lightning-layout style="max-width: 100%;" if:false={isLoading}>
+        
+                                <lightning-layout-item>
+        
+                                    <lightning-layout>
+                                        <lightning-layout-item class="header role">
+                                            Role
+                                        </lightning-layout-item>
+                                        <lightning-layout-item class="header resource">
+                                            Resource
+                                        </lightning-layout-item>
+                                        <lightning-layout-item class="header rate">
+                                            Rate
+                                        </lightning-layout-item>
+                                        <lightning-layout-item class="header fill-action"></lightning-layout-item>
+                                    </lightning-layout>
+                                    
+                                    <lightning-layout for:each={roles} for:item="role" key={role.key} for:index="i">
+                                        <lightning-layout-item class="col role">
+                                            <lightning-input type="text" value={role.role} variant="label-hidden" onchange={handleRoleChange} data-row={role.key}></lightning-input>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item class="col resource">
+                                            <lightning-combobox label="Resource"
+                                                                variant="label-hidden"
+                                                                value={role.resource}
+                                                                placeholder="Select Resource"
+                                                                options={resources}
+                                                                data-row={role.key}
+                                                                onchange={handleResourceSelection}></lightning-combobox>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item class="col rate">
+                                            <lightning-formatted-number format-style="currency" value={role.chargeRate}></lightning-formatted-number>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item class="col fill-action">
+                                            <lightning-button-icon icon-name="utility:forward" title="Fill Across" variant="border-filled" 
+                                                size="x-small" data-row={role.key} onclick={fillFromFirst}></lightning-button-icon>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+        
+                                </lightning-layout-item>
+                                <lightning-layout-item flexibility="grow" style="overflow-y: auto; width: 100%;">
+        
+                                    <lightning-layout style="width: 100%;">
+                                        <lightning-layout-item style={weekColStyle} for:each={weeks} for:item="w" class="header week utilisation" key={w}>
+                                            {w}
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+        
+                                    <lightning-layout for:each={roles} for:item="role" key={role.key} for:index="i" style="width: 100%;">
+                                        <lightning-layout-item for:each={role.days} for:item="day" key={role.key} for:index="j" class="col utilisation" style={weekColStyle} >
+                                            <input value={day} type="number" min="0" max="5" step="0.5" 
+                                                class="slds-input input-centered" data-row={role.key} data-week={j}
+                                                onchange={handleUtilisationChange}></input>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                    
+                                </lightning-layout-item>
+        
+                                <lightning-layout-item flexibility="auto">
+        
+                                    <lightning-layout>
+                                        <lightning-layout-item class="header total-days">
+                                            Days
+                                        </lightning-layout-item>
+                                        <lightning-layout-item class="header total-amount">
+                                            Amount
+                                        </lightning-layout-item>
+                                        <lightning-layout-item class="header row-actions" flexibility="grow">
+                                            
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+                                    
+                                    <lightning-layout for:each={roles} for:item="role" key={role.key}>
+                                        <lightning-layout-item class="col total-days">
+                                            <lightning-formatted-number minimum-fraction-digits="1" maximum-fraction-digits="1"
+                                                value={role.totalDays}></lightning-formatted-number>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item class="col total-amount">
+                                            <lightning-formatted-number format-style="currency"
+                                                value={role.totalAmount}></lightning-formatted-number>
+                                        </lightning-layout-item>
+                                        <lightning-layout-item class="col row-actions" flexibility="shrink">
+                                            <lightning-button-menu alternative-text="Show menu" menu-alignment="right" icon-size="x-small" variant="border-filled" 
+                                                onselect={handleRowAction} data-row={role.key}>
+                                                <template for:each={role.actions} for:item="action">
+                                                    <lightning-menu-item label={action.label} value={action.value} key={action.value}></lightning-menu-item>
+                                                </template>
+                                            </lightning-button-menu>
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+        
+        
+                                </lightning-layout-item>
+                            </lightning-layout>
+        
+                        </lightning-tab>
+        
+                        <!--lightning-tab label="Additional Costs" value="costs" class="slds-p-horizontal_none tab" style="overflow: initial;">
+        
+                            <div class="slds-clearfix slds-p-around_x-small">
+                                <lightning-button-group class="slds-float_right">
+                                    <lightning-button-icon icon-name="utility:add" onclick={addAdditionalCost}></lightning-button-icon>
+                                </lightning-button-group>
+                            </div>
+        
+                            <table class="slds-table slds-table_bordered slds-table_col-bordered rates" style="border-left: 1px; border-right: 1px;">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 400px;">Description</th>
+                                        <th style="min-width: 120px; text-align: center;">Cost</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr for:each={additionalCosts} for:item="cost" key={cost.key}>
+                                        <td>
+                                            <lightning-input variant="label-hidden" data-key={cost.key} onchange={handleCostDescriptionChange} value={cost.description}></lightning-input>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <lightning-input type="number" formatter="currency" variant="label-hidden" class="slds-text-align_center" value={cost.amount}
+                                                 data-key={cost.key} onchange={handleCostAmountChange}></lightning-input>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </lightning-tab-->
+        
+                        <lightning-tab label="Rate card" value="rates">
+        
+                            <table class="slds-table slds-table_bordered slds-table_col-bordered rates" style="border-left: 1px; border-right: 1px;">
+                                <thead>
+                                    <tr>
+                                        <th style="min-width: 400px;">Aware Resource</th>
+                                        <th style="min-width: 120px; text-align: center;">Cost Rate</th>
+                                        <th style="min-width: 120px; text-align: center;">Card Rate</th>
+                                        <th style="min-width: 120px; text-align: center;">Plan Rate</th>
+                                        <th style="min-width: 120px; text-align: center;">Profit</th>
+                                        <th style="min-width: 100px; text-align: center;">Margin</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr for:each={rates} for:item="rate" key={rate.Id}>
+                                        <td>{rate.Name}</td>
+                                        <td style="text-align: center;">
+                                            <lightning-formatted-number value={rate.Daily_Cost_Rate__c} format-style="currency"></lightning-formatted-number>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <lightning-formatted-number value={rate.ResourceRate__c} format-style="currency"></lightning-formatted-number>
+                                        </td>
+                                        <td>
+                                            <lightning-input value={rate.Rate__c} type="number" formatter="currency" variant="label-hidden" class="slds-text-align_center" 
+                                                data-rate-id={rate.Id} onchange={handleRateChange}></lightning-input>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <lightning-formatted-number value={rate.Profit__c} format-style="currency"></lightning-formatted-number>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <lightning-formatted-number value={rate.Margin__c} format-style="percent-fixed" maximum-fraction-digits="1" minimum-fraction-digits="1"></lightning-formatted-number>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+        
+                        </lightning-tab>
+                    </lightning-tabset>
+        
+                </div>
+                <!--div if:true={tsRows.length} class="slds-col slds-no-space slds-scrollable">
+                    <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered timesheet">
+                        <thead>
+                            <tr class="ts-header">
+                                <th scope="col">Engagement Phase</th>
+                                <th scope="col">Assignment</th>
+                                <th scope="col">Time Type</th>
+                                <template for:each={ts.entries} for:item="tse">
+                                    <th key={tse.date} scope="col" data-day={tse.dayType} style="width: 4rem; min-width: 4rem">
+                                        <lightning-formatted-date-time
+                                            value={tse.date}
+                                            weekday="short"
+                                            day="numeric"
+                                        ></lightning-formatted-date-time>
+                                    </th>
+                                </template>
+                                <th scope="col" class="slds-color__background_gray-4" style="width: 4rem; min-width: 4rem">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={tsRows} for:item="row">
+                                <tr key={row.index} data-index={row.index} class="ts-row">
+                                    <td>
+                                        <div class="slds-truncate" title={row.phaseLabel} style="max-width: 15rem">
+                                            <a href={row.phaseURL}>{row.phaseLabel}</a>
+                                        </div>
+                                    </td>
+                                    <th scope="row">
+                                        <div class="slds-truncate" title={row.assLabel} style="max-width: 15rem">
+                                            <a href={row.assURL}>{row.assLabel}</a>
+                                            <lightning-helptext
+                                                if:true={row.help}
+                                                icon-name={row.helpIcon}
+                                                content={row.help}
+                                                class="slds-m-left_x-small"
+                                            ></lightning-helptext>
+                                        </div>
+                                    </th>
+                                    <td if:true={row.typeOptions}>
+                                        <lightning-combobox
+                                            label="Time type"
+                                            value={row.timeType}
+                                            variant="label-hidden"
+                                            placeholder="Select time type"
+                                            options={row.typeOptions}
+                                            onchange={typeChange}
+                                            dropdown-alignment="auto"
+                                        >
+                                        </lightning-combobox>
+                                    </td>
+                                    <td if:false={row.typeOptions}>{row.typeLabel}</td>
+                                    <template for:each={row.hours} for:item="day">
+                                        <td key={day.date} data-day={day.dayType} data-state={day.state}>
+                                            <lightning-input
+                                                type="number"
+                                                name={day.tse}
+                                                value={day.value}
+                                                min="0"
+                                                max={row.max}
+                                                step={row.step}
+                                                placeholder={day.placeholder}
+                                                variant="label-hidden"
+                                                read-only={day.readOnly}
+                                                onchange={hoursChange}
+                                                onblur={hoursBlur}
+                                                oninvalid={handleInvalid}
+                                                message-when-step-mismatch=" "
+                                                message-when-range-underflow=" "
+                                                message-when-range-overflow=" "
+                                            ></lightning-input>
+                                        </td>
+                                    </template>
+                                    <td class="slds-color__background_gray-3"><strong>{row.total}</strong></td>
+                                </tr>
+                            </template>
+                            <tr class="slds-color__background_gray-2 ts-totals">
+                                <th scope="row">
+                                    <strong if:true={ts.isEditingForecasts}>Total Forecast Time</strong>
+                                    <strong if:false={ts.isEditingForecasts}>Total Actual Time</strong>
+                                </th>
+                                <td></td>
+                                <td></td>
+                                <template for:each={totals.days} for:item="day">
+                                    <td key={day.date} data-day={day.dayType}><strong>{day.total}</strong></td>
+                                </template>
+                                <td class="slds-color__background_gray-4"><strong>{totals.total}</strong></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div-->
+                <!--div if:false={tsRows.length} class="slds-col slds-illustration slds-illustration_large slds-p-top_x-large slds-border_top">
+                    <img src="/projRes/ui-home-private/emptyStates/noAssistant.svg" class="slds-illustration__svg" alt="" />
+                    <h3 class="slds-illustration__header slds-text-heading_medium">You have no assignments for this week</h3>
+                    <p class="slds-text-body_regular">Use the panel on the left to add an assignment.</p>
+                </div-->
+            </template>
+            <template if:true={isLoading}>
+                <div class="slds-is-relative slds-col">
+                    <lightning-spinner variant="brand" alternative-text="Loading" size="large"></lightning-spinner>
+                </div>
+            </template>
+        </div>
+    </div>
+
+    <template if:true={showConfigModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+            <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless" id="modal-content-id-1">
+                <lightning-layout multiple-rows>
+
+                    <lightning-layout-item size="6" class="slds-p-horizontal_small">
+                        <lightning-input type="number" class="variance" formatter="percent-fixed" label="Project Variance" value={plan.variance}></lightning-input>
+                    </lightning-layout-item>
+                    
+                    <lightning-layout-item size="6" class="slds-p-horizontal_small">
+                        <lightning-input label="Number of Weeks" class="number-of-weeks" value={plan.weeks}></lightning-input>
+                    </lightning-layout-item>
+                    
+                    <!--lightning-layout-item size="6" class="slds-p-horizontal_small">
+                        <lightning-input label="Number of Iterations" class="iterations" value={plan.iterations}></lightning-input>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="6" class="slds-p-horizontal_small">
+                        <lightning-input label="Weeks Per Sprint" disabled class="weeks-per-sprint" value={plan.weeksPerSprint}></lightning-input>
+                    </lightning-layout-item>
+                    
+                    <lightning-layout-item size="6" class="slds-p-horizontal_small">
+                        <lightning-input label="Sprints Per Iteration" disabled class="sprints-per-iteration" value={plan.sprintsPerIteration}></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="6" class="slds-p-horizontal_small">
+                        <lightning-input label="Planning Sprints" disabled class="planning-sprints" value="0"></lightning-input>
+                    </lightning-layout-item-->
+                    
+                </lightning-layout>
+            </div>
+            <div class="slds-modal__footer">
+                <button class="slds-button slds-button_neutral" aria-label="Cancel and close" onclick={toggleConfigModal}>Cancel</button>
+                <button class="slds-button slds-button_brand" onclick={saveConfig}>Ok</button>
+            </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+    <!-- shaddow element for csv download -->
+    <div lwc:dom="manual" class="shadow"></div>
+</template>
