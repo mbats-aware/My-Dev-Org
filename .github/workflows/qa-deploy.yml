@@ -1,9 +1,6 @@
 name: QA Deployment
 on:
-  workflow_dispatch:
-  pull_request: 
-    types:
-      - closed
+  workflow_dispatch
 
 jobs:
   validate:
@@ -15,5 +12,5 @@ jobs:
     steps:
       name: Authenticate QA Org
       run: |
-          echo ${{ secrets.AUTH_URL }} > authURL
-          sfdx auth:sfdxurl:store -f qaAuthUrl -a qa
+        echo ${{ secrets.AUTH_URL }} > authURL
+        sfdx auth:sfdxurl:store -f qaAuthUrl -a qa
