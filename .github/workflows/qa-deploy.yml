@@ -16,17 +16,17 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Authenticating QA Org
+      - name: Authenticate QA Org
         run: |
           echo ${{ secrets.AUTH_URL }} > authURL
           sfdx auth:sfdxurl:store -f authURL -a "QA Org"
-      - name: Generating Deployment Package
+      - name: Generate Deployment Package
         run: |
           sfdx force:source:convert -r "force-app" -d "deploy/"
-      - name: Validating Deployment
+      - name: Validate Deployment
         run: |
           sfdx force:source:deploy -p "deploy/" -c --verbose -u "QA Org"
-      - name: Deploying Package
+      - name: Deploy Package
         run: |
           sfdx force:source:deploy -p "deploy/" --verbose -u "QA Org"
 
