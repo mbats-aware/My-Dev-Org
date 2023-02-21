@@ -4,7 +4,7 @@ on: workflow_dispatch
 
 jobs:
   validate:
-    if: github.event.pull_request.merge == true
+    # if: github.event.pull_request.merge == true
     runs-on: ubuntu-latest
     environment: QA
     container:
