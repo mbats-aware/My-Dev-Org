@@ -12,5 +12,5 @@ jobs:
     steps:
       - name: Authenticate QA
         run: |
-        echo ${{ secrets.AUTH_URL }} > authURL
-        sfdx auth:sfdxurl:store -f qaAuthUrl -a qa
+          echo ${{ secrets.AUTH_URL }} > authURL
+          sfdx auth:sfdxurl:store -f qaAuthUrl -a qa
