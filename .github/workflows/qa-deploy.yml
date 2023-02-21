@@ -25,5 +25,5 @@ jobs:
           sfdx force:source:convert -r "force-app" -d "deploy/"
       - name: Validating Deployment
         run: |
-          sfdx force:source:deploy -p "deploy/" -c --verbose
+          sfdx force:source:deploy -p "deploy/" -c --verbose -u "QA Org"
 
