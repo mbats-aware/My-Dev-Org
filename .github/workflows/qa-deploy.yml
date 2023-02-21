@@ -1,6 +1,5 @@
 name: QA Deployment
-on:
-  workflow_dispatch
+on: workflow_dispatch
 
 jobs:
   validate:
@@ -10,7 +9,6 @@ jobs:
     container:
       image: awareservices/sfdx-cli:latest
     steps:
-      name: Authenticate QA Org
       run: |
         echo ${{ secrets.AUTH_URL }} > authURL
         sfdx auth:sfdxurl:store -f qaAuthUrl -a qa
