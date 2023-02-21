@@ -1,12 +1,13 @@
 name: QA Deployment
 on:
+  
   pull_request:
     types:
       - closed
 
 jobs:
   validate:
-    if: github.event.pull_request.merged == true
+    if: ${{ github.event.pull_request.merged }} == true
       runs-on: ubuntu-latest
       environment: QA
       container:
