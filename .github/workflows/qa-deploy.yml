@@ -1,6 +1,9 @@
 name: QA Deployment
 
-on: workflow_dispatch
+on: 
+  workflow_dispatch:
+    paths:
+      - "force-app/main/default/**"
 
 jobs:
   validate:
