@@ -12,5 +12,7 @@ jobs:
       container:
         image: awareservices/sfdx-cli:latest
       steps:
-        - run: |
-          
+        name: Authenticate QA Org
+        run: |
+            echo ${{ secrets.AUTH_URL }} > authURL
+            sfdx auth:sfdxurl:store -f qaAuthUrl -a qa
