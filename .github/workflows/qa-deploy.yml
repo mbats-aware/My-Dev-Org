@@ -1,9 +1,6 @@
 name: QA Deployment
 
-on: 
-  workflow_dispatch:
-    paths:
-      - "force-app/main/default/**"
+on: workflow_dispatch
 
 jobs:
   validate:
@@ -13,11 +10,7 @@ jobs:
     container:
       image: awareservices/sfdx-cli:latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       - name: Authenticate
         run: |
-          echo ${{ secrets.AUTH_URL }} > authURL
+          echo ${{ secrets.AUTH_URL }} > qaAuthURL
           sfdx auth:sfdxurl:store -f qaAuthUrl -a qa
