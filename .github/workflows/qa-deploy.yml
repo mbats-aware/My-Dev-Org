@@ -33,5 +33,5 @@ jobs:
           # echo "deploy/result.json"
       - name: Deploy Package
         run: |
-          sfdx force:source:deploy -p "deploy/" --verbose -u "QA Org"
+          sfdx force:source:deploy -p "deploy/" --verbose -u "QA Org" -q $ID
 
