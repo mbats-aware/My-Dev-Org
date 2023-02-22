@@ -27,8 +27,8 @@ jobs:
           sfdx force:source:convert -r "force-app" -d "deploy/"
       - name: Validate Deployment
         run: |
-          ID=$(sfdx force:source:deploy --metadata=StaticResource -w=0 | sed 's/^Id: \(.*\)/\1/')
-          echo $Id
+          ID=$(sfdx force:source:deploy --json -p "deploy/" -c --verbose -u "QA Org" -w=0 | sed 's/^Id: \(.*\)/\1/')
+          echo $ID
           # sfdx force:source:deploy --json -p "deploy/" -c --verbose -u "QA Org" > "deploy/result.json"
           # echo "deploy/result.json"
       - name: Deploy Package
