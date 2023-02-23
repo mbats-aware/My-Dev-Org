@@ -5,7 +5,8 @@ name: QA Deployment
 
 on: 
   pull_request:
-    types: [closed]
+    types: 
+      - closed
     paths:
       - "force-app/main/default/**"
 
