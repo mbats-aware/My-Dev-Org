@@ -17,6 +17,11 @@ on:
       #- "force-app/main/default/**"
 
 jobs:
+  confirm_merge_status:
+    steps:
+      - name: Log merge status
+        run: |
+          echo "Merge Details: ${{ github.event.pull_request }}"
   validate:
     if: ${{ github.event.pull_request.merge == true }}
     runs-on: ubuntu-latest
