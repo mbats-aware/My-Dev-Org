@@ -10,19 +10,7 @@ on:
     paths:
       - "force-app/main/default/**"
 
-  #workflow_dispatch:
-    #branches: 
-      #- qa
-    #paths:
-      #- "force-app/main/default/**"
-
 jobs:
-  confirm_merge_status:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Log merge status
-        run: |
-          echo "Merge Details: ${{ github.event.pull_request.merged }}"
   validate:
     if: ${{ github.event.pull_request.merged }}
     runs-on: ubuntu-latest
@@ -52,12 +40,21 @@ jobs:
         run: |
           ID=$(sfdx force:source:deploy -p "deploy/" -c -u "QA Org" -w=0 --json | jq -r .result.id)
           echo "deployId=$ID" >> $GITHUB_OUTPUT
-      - uses: mshick/add-pr-comment@v2
+
+          URL=$(sfdx force:org:display -u "QA Org" --json | jq -r .result.instanceUrl)
+          echo "orgUrl=$URL" >> $GITHUB_OUTPUT
+      - name: Update PR
+        uses: mshick/add-pr-comment@v2
+        if: ${{ always() }}
         with:
           message: |
             "QA Package Validation Successful"
+          message-failure: |
+            "QA Package Validation Failed"
       - name: Deploy Package
+        if: ${{ success() }}
         run: |
           echo "Validation Deployment ID: ${{ steps.validation.outputs.deployId }}"
+          echo "QA Org URL: ${{ steps.validation.outputs.orgUrl }}"
           sfdx force:source:deploy --verbose -u "QA Org" -q "${{ steps.validation.outputs.deployId }}"
 
