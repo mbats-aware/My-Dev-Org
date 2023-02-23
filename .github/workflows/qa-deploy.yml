@@ -13,16 +13,11 @@ jobs:
     runs-on: ubuntu-latest
     environment: QA
     container:
-      image: awareservices/sfdx-cli:latest
+      image: salesforce/salesforcedx:latest-full
     steps:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Install dependencies
-        run: |
-          sudo apt install -y jq
-          jq --version
-          #npm audit fix
       - name: Authenticate QA Org
         run: |
           echo ${{ secrets.AUTH_URL }} > authURL
