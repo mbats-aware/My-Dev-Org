@@ -18,7 +18,7 @@ on:
 
 jobs:
   validate:
-    if: github.event.pull_request.merge == true
+    if: ${{ github.event.pull_request.merge == true }}
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
