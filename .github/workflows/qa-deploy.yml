@@ -34,11 +34,11 @@ jobs:
           sfdx auth:sfdxurl:store -f authURL -a "QA Org"
       - name: Generate Deployment Package
         run: |
-          sfdx force:source:convert -r "force-app" -d "deploy/" --json
+          sfdx force:source:convert -r "force-app" -d "deploy/src/" --json
       - name: Validate Deployment
         id: validation
         run: |
-          ID=$(sfdx force:source:deploy -p "deploy/" -c -u "QA Org" -w=0 --json | jq -r .result.id)
+          ID=$(sfdx force:source:deploy -p "deploy/src/" -c -u "QA Org" -w=0 --json | jq -r .result.id)
           echo "deployId=$ID" >> $GITHUB_OUTPUT
 
           URL=$(sfdx force:org:display -u "QA Org" --json | jq -r .result.instanceUrl)
@@ -56,5 +56,6 @@ jobs:
         run: |
           echo "Validation Deployment ID: ${{ steps.validation.outputs.deployId }}"
           echo "QA Org URL: ${{ steps.validation.outputs.orgUrl }}"
-          sfdx force:source:deploy --verbose -u "QA Org" -q "${{ steps.validation.outputs.deployId }}"
+          #sfdx force:source:deploy --verbose -u "QA Org" -q "${{ steps.validation.outputs.deployId }}"
+          sfdx force:source:deploy --verbose -u "QA Org" -p "deploy/src/"
 
