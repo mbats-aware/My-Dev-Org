@@ -5,8 +5,6 @@ name: QA Deployment
 
 on: 
   pull_request:
-    branches:
-      - qa
     paths:
       - "force-app/main/default/**"
 
