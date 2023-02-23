@@ -18,6 +18,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
+      - name: Install JQ Tool
+        uses: mbround18/install-jq@v1
       - name: Authenticate QA Org
         run: |
           echo ${{ secrets.AUTH_URL }} > authURL
