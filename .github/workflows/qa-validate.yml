@@ -25,6 +25,7 @@ jobs:
             "QA Package Validation in Progress"
       - uses: actions/checkout@v2
         with:
+          ref: ${{ github.ref }}
           fetch-depth: 0
       - name: Authenticate QA Org
         run: |
