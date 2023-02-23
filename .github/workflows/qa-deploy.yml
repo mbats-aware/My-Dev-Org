@@ -26,14 +26,16 @@ jobs:
       - name: Validate Deployment
         run: |
           ID=$(sfdx force:source:deploy -p "deploy/" -c -u "QA Org" --json)
-          echo $ID > "deploy/result.log"
+          echo "result=$(cat ID)" >> $GITHUB_OUTPUT
+          echo ${{ steps.vars.outputs.result }}
+          #echo $ID > "deploy/result.log"
           # sfdx force:source:deploy --json -p "deploy/" -c -u "QA Org" > "deploy/result.json"
-          # echo "deploy/result.json"
+          # echo result
       - name: get properties
         id: json_properties
         uses: zoexx/github-action-json-file-properties@release
         with:
-          file_path: "deploy/result.json"
+          file_path: result
       - name: log json output
         run: |
           echo ${{ steps.json_properties.outputs }}
