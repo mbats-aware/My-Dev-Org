@@ -26,14 +26,14 @@ jobs:
       - name: Validate Deployment
         uses: sergeysova/jq-action@v2
         id: id
-        with: |
-          ID=$(sfdx force:source:deploy -p "deploy/" -c -u "QA Org" -w=0 | jq -r '.result.Id')
+        run: |
+          echo sfdx force:source:deploy -p "deploy/" -c -u "QA Org" -w=0 > "result.json"
           echo $ID
       - name: get properties
         id: json_properties
         uses: zoexx/github-action-json-file-properties@release
         with:
-          file_path: result
+          file_path: "result.json"
       - name: log json output
         run: |
           echo ${{ steps.json_properties.outputs }}
