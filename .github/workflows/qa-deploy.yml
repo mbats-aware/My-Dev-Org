@@ -9,8 +9,6 @@ jobs:
   validate:
     # if: github.event.pull_request.merge == true
     runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.step1.outputs.jobId }}
     environment: QA
     container:
       image: awareservices/sfdx-cli:latest
@@ -28,7 +26,7 @@ jobs:
       - name: Validate Deployment
         run: |
           ID=$(sfdx force:source:deploy --json -p "deploy/" -c --verbose -u "QA Org")
-          echo $ID > "deploy/validate/output.json"
+          echo $ID > "deploy/result.json"
           # sfdx force:source:deploy --json -p "deploy/" -c --verbose -u "QA Org" > "deploy/result.json"
           # echo "deploy/result.json"
       - name: Deploy Package
