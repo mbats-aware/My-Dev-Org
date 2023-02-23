@@ -25,8 +25,10 @@ jobs:
           sfdx force:source:convert -r "force-app" -d "deploy/"
       - name: Validate Deployment
         run: |
-          echo "result=$(sfdx force:source:deploy -p "deploy/" -c -u "QA Org" --json)" >> $GITHUB_OUTPUT
-          echo ${{ steps.vars.outputs.result }}
+          echo "RESULT<<EOF" >> $GITHUB_ENV
+          echo $(sfdx force:source:deploy -p "deploy/" -c -u "QA Org" --json) >> $GITHUB_ENV 
+          echo "EOF" >> $GITHUB_ENV
+          echo ${{ env.result }}
           #echo $ID > "deploy/result.log"
           # sfdx force:source:deploy --json -p "deploy/" -c -u "QA Org" > "deploy/result.json"
           # echo result
