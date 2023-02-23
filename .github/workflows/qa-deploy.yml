@@ -15,11 +15,12 @@ jobs:
     container:
       image: awareservices/sfdx-cli:latest
     steps:
+      - name: Install JQ Library
+        run: |
+          sudo apt-get install jq
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-      - name: Install JQ Tool
-        uses: mbround18/install-jq@v1
       - name: Authenticate QA Org
         run: |
           echo ${{ secrets.AUTH_URL }} > authURL
@@ -29,7 +30,7 @@ jobs:
           sfdx force:source:convert -r "force-app" -d "deploy/"
       - name: Validate Deployment
         run: |
-          ID=$(sfdx force:source:deploy --json -p "deploy/" -c --verbose -u "QA Org" -w=0 2> /dev/null | jq -r .result.id)
+          ID=$(sfdx force:source:deploy --json -p "deploy/" -c --verbose -u "QA Org" -w=0 | jq -r '.result.id')
           echo $ID > "deploy/validate/output.json"
           # sfdx force:source:deploy --json -p "deploy/" -c --verbose -u "QA Org" > "deploy/result.json"
           # echo "deploy/result.json"
