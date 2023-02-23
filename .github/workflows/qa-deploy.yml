@@ -30,9 +30,9 @@ jobs:
         id: validation
         run: |
           ID=$(sfdx force:source:deploy -p "deploy/" -c -u "QA Org" -w=0 --json | jq -r .result.id)
-          echo "Validation Deployment ID: $ID"
           echo "deployId=$ID" >> $GITHUB_OUTPUT
       - name: Deploy Package
         run: |
-          sfdx force:source:deploy -p "deploy/" --verbose -u "QA Org" -q ${{ steps.validation.ouputs.deployId }}
+          echo "Validation Deployment ID: ${{ steps.validation.outputs.deployId }}"
+          sfdx force:source:deploy -p "deploy/" --verbose -u "QA Org" -q "${{ steps.validation.outputs.deployId }}"
 
