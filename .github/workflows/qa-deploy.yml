@@ -1,3 +1,5 @@
+# validate on seperate instance
+# on success, deploy to validation box AND QA box
 name: QA Deployment
 
 on: 
@@ -18,7 +20,8 @@ jobs:
           fetch-depth: 0
       - name: Install dependencies
         run: |
-          npm install node-jq --save
+          sudo apt install -y jq
+          jq --version
           #npm audit fix
       - name: Authenticate QA Org
         run: |
