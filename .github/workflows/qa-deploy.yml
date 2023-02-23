@@ -30,7 +30,7 @@ jobs:
           sfdx force:source:convert -r "force-app" -d "deploy/"
       - name: Validate Deployment
         run: |
-          ID=$(sfdx force:source:deploy --json -p "deploy/" -c --verbose -u "QA Org" -w=0 | jq -r '.result.id')
+          ID=$(sfdx force:source:deploy --json -p "deploy/" -c --verbose -u "QA Org")
           echo $ID > "deploy/validate/output.json"
           # sfdx force:source:deploy --json -p "deploy/" -c --verbose -u "QA Org" > "deploy/result.json"
           # echo "deploy/result.json"
