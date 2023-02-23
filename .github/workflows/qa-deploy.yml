@@ -25,13 +25,8 @@ jobs:
           sfdx force:source:convert -r "force-app" -d "deploy/"
       - name: Validate Deployment
         run: |
-          echo "RESULT<<EOF" >> $GITHUB_ENV
-          echo $(sfdx force:source:deploy -p "deploy/" -c -u "QA Org" --json) >> $GITHUB_ENV 
-          echo "EOF" >> $GITHUB_ENV
-          echo ${{ env.result }}
-          #echo $ID > "deploy/result.log"
-          # sfdx force:source:deploy --json -p "deploy/" -c -u "QA Org" > "deploy/result.json"
-          # echo result
+          ID=$(sfdx force:source:deploy -p "deploy/" -c -u "QA Org" --json --verbose | sed 's/^Id: \(.*\)/\1/')
+          echo $ID
       - name: get properties
         id: json_properties
         uses: zoexx/github-action-json-file-properties@release
