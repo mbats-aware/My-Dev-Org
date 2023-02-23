@@ -35,10 +35,11 @@ jobs:
         run: |
           sfdx force:source:convert -r "force-app" -d "deploy/src/" --json
       - name: Deploy Package
+        id: deployment
         run: |
           URL=$(sfdx force:org:display -u "QA Org" --json | jq -r .result.instanceUrl)
           echo "orgUrl=$URL" >> $GITHUB_OUTPUT
-          echo "QA Org URL: ${{ steps.validation.outputs.orgUrl }}"
+          echo "QA Org URL: ${{ steps.deployment.outputs.orgUrl }}"
           #sfdx force:source:deploy --verbose -u "QA Org" -q "${{ steps.validation.outputs.deployId }}"
           sfdx force:source:deploy --verbose -u "QA Org" -p "deploy/src/"
 
