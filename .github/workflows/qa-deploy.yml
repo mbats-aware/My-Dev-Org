@@ -5,6 +5,7 @@ name: QA Deployment
 
 on: 
   pull_request:
+    types: [closed]
     paths:
       - "force-app/main/default/**"
 
@@ -18,10 +19,16 @@ jobs:
   validate:
     if: github.event.pull_request.merge == true
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
     environment: QA
     container:
       image: salesforce/salesforcedx:latest-full
     steps:
+      - uses: mshick/add-pr-comment@v2
+        with:
+          message: |
+            "QA Package Validation in Progress"
       - uses: actions/checkout@v2
         with:
           #ref: ${{ github.head_ref }}
@@ -38,6 +45,10 @@ jobs:
         run: |
           ID=$(sfdx force:source:deploy -p "deploy/" -c -u "QA Org" -w=0 --json | jq -r .result.id)
           echo "deployId=$ID" >> $GITHUB_OUTPUT
+      - uses: mshick/add-pr-comment@v2
+        with:
+          message: |
+            "QA Package Validation Successful"
       - name: Deploy Package
         run: |
           echo "Validation Deployment ID: ${{ steps.validation.outputs.deployId }}"
