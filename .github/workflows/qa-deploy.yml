@@ -22,9 +22,9 @@ jobs:
     steps:
       - name: Log merge status
         run: |
-          echo "Merge Details: ${{ github.event.pull_request }}"
+          echo "Merge Details: ${{ github.event.pull_request.merged }}"
   validate:
-    if: ${{ github.event.pull_request.merge == true }}
+    if: ${{ github.event.pull_request.merged }}
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
