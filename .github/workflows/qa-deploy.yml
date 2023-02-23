@@ -24,9 +24,11 @@ jobs:
         run: |
           sfdx force:source:convert -r "force-app" -d "deploy/"
       - name: Validate Deployment
-        run: |
-          ID=$(sfdx force:source:deploy -p "deploy/" -c -u "QA Org" -w=0 | jq -r '.result.Id')
-          echo $ID
+        uses: sergeysova/jq-action@v2
+        id: id
+        with: |
+          sfdx force:source:deploy -p "deploy/" -c -u "QA Org" -w=0 | jq -r '.result.Id'
+          echo ${{ steps.id.outputs.value }}
       - name: get properties
         id: json_properties
         uses: zoexx/github-action-json-file-properties@release
