@@ -26,8 +26,6 @@ jobs:
         run: |
           sfdx force:source:convert -r "force-app" -d "deploy/"
       - name: Validate Deployment
-        uses: sergeysova/jq-action@v2
-        id: id
         run: |
           echo sfdx force:source:deploy -p "deploy/" -c -u "QA Org" -w=0 > "result.json"
           echo $ID
