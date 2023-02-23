@@ -6,10 +6,10 @@ name: QA Deployment
 on: 
   pull_request:
     branches:
-      -qa
+      - qa
     paths:
       - "force-app/main/default/**"
-      
+
   #workflow_dispatch:
     #branches: 
       #- qa
