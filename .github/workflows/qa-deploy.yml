@@ -18,6 +18,7 @@ on:
 
 jobs:
   confirm_merge_status:
+    runs-on: ubuntu-latest
     steps:
       - name: Log merge status
         run: |
