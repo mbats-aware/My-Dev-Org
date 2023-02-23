@@ -19,7 +19,7 @@ jobs:
       - name: Install dependencies
         run: |
           npm install node-jq --save
-          npm audit fix
+          #npm audit fix
       - name: Authenticate QA Org
         run: |
           echo ${{ secrets.AUTH_URL }} > authURL
