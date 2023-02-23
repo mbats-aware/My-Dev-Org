@@ -34,5 +34,5 @@ jobs:
       - name: Deploy Package
         run: |
           echo "Validation Deployment ID: ${{ steps.validation.outputs.deployId }}"
-          sfdx force:source:deploy -p "deploy/" --verbose -u "QA Org" -q "${{ steps.validation.outputs.deployId }}"
+          sfdx force:source:deploy --verbose -u "QA Org" -q "${{ steps.validation.outputs.deployId }}"
 
