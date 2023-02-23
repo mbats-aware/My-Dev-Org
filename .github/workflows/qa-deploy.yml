@@ -15,9 +15,6 @@ jobs:
     container:
       image: awareservices/sfdx-cli:latest
     steps:
-      - name: Install JQ Library
-        run: |
-          sudo apt-get install jq
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0
