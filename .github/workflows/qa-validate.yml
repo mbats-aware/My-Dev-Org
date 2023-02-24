@@ -4,7 +4,6 @@
 name: QA Validate
 
 on: 
-  workflow_dispatch:
   pull_request:
     types: 
       - opened
@@ -20,15 +19,10 @@ jobs:
     container:
       image: salesforce/salesforcedx:latest-full
     steps:
-      #- uses: mshick/add-pr-comment@v2
-        # with:
-          # message: |
-            # "QA Package Validation in Progress"
       - name: Branch Checkout
         uses: actions/checkout@v2
         with:
-          #ref: ${{ github.ref }}
-          ref: feature-test
+          ref: ${{ github.ref }}
           fetch-depth: 0
       - name: Authenticate QA Org
         run: |
@@ -36,23 +30,8 @@ jobs:
           sfdx auth:sfdxurl:store -f authURL -a "QA Org"
       - name: Generate Deployment Package
         run: |
-          sfdx force:source:convert -r "force-app" -d "deploy/src/" --json
+          sfdx force:source:convert -r "force-app" -d "deploy/src/"
       - name: Validate Deployment
         id: validation
         run: |
-          RESPONSE=$(sfdx force:source:deploy -p "deploy/src/" -c -u "QA Org" -w=0 --json --verbose)
-          echo $RESPONSE
-          //ID=$(RESPONSE | jq -r .result.id)
-          //echo "deployId=$ID" >> $GITHUB_OUTPUT
-
-          //URL=$(sfdx force:org:display -u "QA Org" --json | jq -r .result.instanceUrl)
-          //echo "orgUrl=$URL" >> $GITHUB_OUTPUT
-      # name: Update PR
-        # uses: mshick/add-pr-comment@v2
-        # if: ${{ always() }}
-        # with:
-          # message: |
-            # "QA Package Validation Successful"
-          # message-failure: |
-            # "QA Package Validation Failed"
-
+          sfdx force:source:deploy -p "deploy/src/" -c -u "QA Org" --verbose
