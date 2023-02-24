@@ -40,7 +40,7 @@ jobs:
       - name: Validate Deployment
         id: validation
         run: |
-          RESPONSE=$(sfdx force:source:deploy -p "deploy/src/" -c -u "QA Org" -w=0 --json)
+          RESPONSE=$(sfdx force:source:deploy -p "deploy/src/" -c -u "QA Org" --json)
           echo $RESPONSE
           status=$($RESPONSE | jq -r .result.status)
           echo $status
