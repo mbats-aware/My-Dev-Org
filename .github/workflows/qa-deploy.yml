@@ -1,23 +1,18 @@
 # validate on seperate instance
 # on success, deploy to validation box AND QA box
 # on failure email someone
-name: QA Deployment
+name: QA Deploy
 
 on: 
   pull_request:
-    types: [closed]
+    types: 
+      - closed
     paths:
       - "force-app/main/default/**"
 
-  #workflow_dispatch:
-    #branches: 
-      #- qa
-    #paths:
-      #- "force-app/main/default/**"
-
 jobs:
   validate:
-    if: github.event.pull_request.merge == true
+    if: ${{ github.event.pull_request.merged }}
     runs-on: ubuntu-latest
     permissions:
       pull-requests: write
@@ -31,7 +26,6 @@ jobs:
             "QA Package Validation in Progress"
       - uses: actions/checkout@v2
         with:
-          #ref: ${{ github.head_ref }}
           fetch-depth: 0
       - name: Authenticate QA Org
         run: |
@@ -39,18 +33,13 @@ jobs:
           sfdx auth:sfdxurl:store -f authURL -a "QA Org"
       - name: Generate Deployment Package
         run: |
-          sfdx force:source:convert -r "force-app" -d "deploy/" --json
-      - name: Validate Deployment
-        id: validation
-        run: |
-          ID=$(sfdx force:source:deploy -p "deploy/" -c -u "QA Org" -w=0 --json | jq -r .result.id)
-          echo "deployId=$ID" >> $GITHUB_OUTPUT
-      - uses: mshick/add-pr-comment@v2
-        with:
-          message: |
-            "QA Package Validation Successful"
+          sfdx force:source:convert -r "force-app" -d "deploy/src/" --json
       - name: Deploy Package
+        id: deployment
         run: |
-          echo "Validation Deployment ID: ${{ steps.validation.outputs.deployId }}"
-          sfdx force:source:deploy --verbose -u "QA Org" -q "${{ steps.validation.outputs.deployId }}"
+          URL=$(sfdx force:org:display -u "QA Org" --json | jq -r .result.instanceUrl)
+          echo "orgUrl=$URL" >> $GITHUB_OUTPUT
+          echo "QA Org URL: ${{ steps.deployment.outputs.orgUrl }}"
+          #sfdx force:source:deploy --verbose -u "QA Org" -q "${{ steps.validation.outputs.deployId }}"
+          sfdx force:source:deploy --verbose -u "QA Org" -p "deploy/src/"
 
