@@ -42,7 +42,7 @@ jobs:
         run: |
           RESPONSE=$(sfdx force:source:deploy -p "deploy/src/" -c -u "QA Org" -w=0 --json)
           echo $RESPONSE
-          status=$(RESPONSE | jq -r .result.status)
+          status=$($RESPONSE | jq -r .result.status)
           echo $status
 
           # URL=$(sfdx force:org:display -u "QA Org" --json | jq -r .result.instanceUrl)
