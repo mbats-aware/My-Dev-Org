@@ -4,6 +4,7 @@
 name: QA Validate
 
 on: 
+  workflow_dispatch:
   pull_request:
     types: 
       - opened
@@ -26,7 +27,8 @@ jobs:
       - name: Branch Checkout
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.ref }}
+          #ref: ${{ github.ref }}
+          ref: feature-test
           fetch-depth: 0
       - name: Authenticate QA Org
         run: |
@@ -38,11 +40,13 @@ jobs:
       - name: Validate Deployment
         id: validation
         run: |
-          ID=$(sfdx force:source:deploy -p "deploy/src/" -c -u "QA Org" -w=0 --json | jq -r .result.id)
-          echo "deployId=$ID" >> $GITHUB_OUTPUT
+          RESPONSE=$(sfdx force:source:deploy -p "deploy/src/" -c -u "QA Org" -w=0 --json --verbose)
+          echo $RESPONSE
+          //ID=$(RESPONSE | jq -r .result.id)
+          //echo "deployId=$ID" >> $GITHUB_OUTPUT
 
-          URL=$(sfdx force:org:display -u "QA Org" --json | jq -r .result.instanceUrl)
-          echo "orgUrl=$URL" >> $GITHUB_OUTPUT
+          //URL=$(sfdx force:org:display -u "QA Org" --json | jq -r .result.instanceUrl)
+          //echo "orgUrl=$URL" >> $GITHUB_OUTPUT
       # name: Update PR
         # uses: mshick/add-pr-comment@v2
         # if: ${{ always() }}
